@@ -1,22 +1,27 @@
 package sec.project.domain;
 
 import javax.persistence.Entity;
-import org.springframework.data.jpa.domain.AbstractPersistable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
-public class Signup extends AbstractPersistable<Long> {
-
+public class Signup  {
+    
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer id;
+    
     private String name;
     private String address;
-
-    public Signup() {
-        super();
+    private Boolean allow;
+     
+    public Integer getId() {
+	return id;
     }
-
-    public Signup(String name, String address) {
-        this();
-        this.name = name;
-        this.address = address;
+    
+    public void setId(Integer id) {	
+        this.id = id;
     }
 
     public String getName() {
@@ -34,5 +39,12 @@ public class Signup extends AbstractPersistable<Long> {
     public void setAddress(String address) {
         this.address = address;
     }
+   
+    public Boolean getAllow() {
+        return allow;
+    }
 
+    public void setAllow(Boolean allow) {
+        this.allow = allow;
+    }
 }
