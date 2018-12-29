@@ -4,11 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 @Controller
 public class LoginController {
@@ -23,18 +19,18 @@ public class LoginController {
         return "login";
     }
     
-    //Simple and bad login that allows sql injection
+    //Simple and bad login
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String submitLogin(@RequestParam String username, @RequestParam String password) throws SQLException {
         
-        String url = "jdbc:mysql://localhost:3306/db_signup";
+        String url = "jdbc:mysql://localhost:3306/db_signup?allowMultiQueries=true";
         
-        Connection connection = DriverManager.getConnection (url, "signup", "password");
+        Connection connection = DriverManager.getConnection(url, "signup", "password");
 
         String query = "SELECT * FROM User";
         
         Statement statement = connection.createStatement();
-        // suoritetaan kysely -- tuloksena resultSet-olio
+        
         ResultSet resultSet = statement.executeQuery(query);
 
         while(resultSet.next()) {
@@ -45,7 +41,6 @@ public class LoginController {
             } 
         }
 
-        // suljetaan lopulta yhteys tietokantaan
         connection.close();
         return "redirect:/login";
     }
